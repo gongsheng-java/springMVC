@@ -13,9 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Administrator on 2017/6/1.
  */
 public class Excutor {
-
-
-
     // 列出execute最核心的几个属性、以及常用方法、和execute的执行流程
 
         // 核心线程数，当工作线程达到这个值，会将任务放到阻塞队列里面，当阻塞队列也满了，创建新线程执行任务，当达到最大线程数时，就该饱和异常了，饱和策略需要自己定义，实现其他
