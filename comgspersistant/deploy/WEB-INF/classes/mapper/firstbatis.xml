@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SpringMVC.blog4gs.dao.IFirstDao">
+    <resultMap id="firstResult" type="FirstModel">
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+    </resultMap>
+
+    <!--<insert id="insert" parameterType="com.sitech.miso.livechat.core.model.AgentStatusLog">
+        insert into tw_lc_agent_status_log
+        (ID,AGENT_ID,STATUS,START_TIME,END_TIME,DURATION,REMARK,TENANT_ID,WORKGROUP_ID)
+        values (
+        #{id },
+        #{agentId },
+        #{status },
+        #{startTime},
+        #{endTime },
+        #{duration},
+        #{remark },
+        #{tenantId },
+        #{workgroupId}
+        )
+    </insert>-->
+
+    <select id="getFirstModel" parameterType="FirstModel" resultMap="firstResult">
+        select * from firsttest where id=#{id}
+    </select>
+
+   <!-- <select id="getExtraAgentStatusLogList" parameterType="java.lang.String" resultMap="statusLogResult">
+        SELECT * FROM tw_lc_agent_status_log l
+        WHERE
+        NOT EXISTS (
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        tw_lc_agent_status_detail_log dl
+        WHERE
+        dl.CREATE_DATE = #{date}
+        LIMIT 3000
+        ) d
+        WHERE l.ID = d.STATUS_LOG_ID
+        )
+        AND (
+        SUBSTR(l.START_TIME,1,8) &lt;= #{date}
+        AND SUBSTR(l.END_TIME,1,8) &gt;= #{date}
+        )
+        LIMIT 1000
+    </select>-->
+</mapper>

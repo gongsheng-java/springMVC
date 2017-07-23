@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SpringMVC.blog4gs.dao.IFirstDao">
+    <resultMap id="firstResult" type="FirstModel">
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+    </resultMap>
+
+
+    <select id="getFirstModel" parameterType="FirstModel" resultMap="firstResult">
+        select * from firsttest where id=#{id}
+    </select>
+
+</mapper>

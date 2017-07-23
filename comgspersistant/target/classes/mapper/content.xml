@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SpringMVC.blog4gs.dao.content.IContentDao">
+    <resultMap id="classifydb" type="Classifydb">
+        <result property="userId" column="userId" />
+        <result property="classifyName" column="classifyName" />
+    </resultMap>
+    <resultMap id="classifyBeanOut" type="SpringMVC.blog4gs.model.classify.ClassifyBeanOut">
+        <result property="id" column="id" />
+        <result property="classifyName" column="classifyName" />
+        <result property="createTime" column="createTime" />
+    </resultMap>
+    <resultMap id="contentBeanOut" type="SpringMVC.blog4gs.model.content.ContentOutBean">
+        <result property="articleId" column="id" />
+        <result property="classifyId" column="classifyId" />
+        <result property="headStr" column="headInfo" />
+        <result property="content" column="content" />
+        <result property="favCount" column="favCount" />
+        <result property="downloadCount" column="downloadCount" />
+    </resultMap>
+
+    <!--插入空数据时该分类下不应该有空的标题或者内容的文章-->
+    <select id="findEmptyArticle" resultType="int">
+        SELECT id FROM blogcontent WHERE userId=CONVERT(#{userId},signed int) AND classifyId=CONVERT(classifyId,signed int) AND headInfo='' AND content is NULL
+    </select>
+    <insert id="addDefaultArticle" parameterType="ContentDB" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO blogcontent(classifyId,userId,updateTime,createTime) VALUES(
+         CONVERT(#{classifyId},signed int),
+         CONVERT(#{userId},signed int),
+         CURRENT_TIME(),
+         CURRENT_TIME()
+        )
+    </insert>
+    <select id="findArticle" resultMap="contentBeanOut">
+        SELECT * FROM blogcontent WHERE userId=CONVERT(#{userId},signed int)<if test="classifyId!=0"> AND classifyId=CONVERT(#{classifyId},signed int)</if>
+    </select>
+    <update id="updateArticle">
+        UPDATE blogcontent set headInfo=#{headInfo},content=#{content} WHERE id=#{articleId}
+    </update>
+    <delete id="deleteArticle">
+        DELETE FROM blogcontent WHERE id=CONVERT(#{articleId},signed int) AND userId=CONVERT(#{userId},signed int)
+    </delete>
+   <!-- <insert id="addClass" parameterType="Classifydb">
+        INSERT INTO  blogclassify(userId,createTime,updateTime,classifyName) VALUES(
+        CONVERT(#{userId},signed int),
+        CURRENT_TIME(),
+        CURRENT_TIME(),
+        #{classifyName}
+        )
+    </insert>
+
+    <select id="findClass" parameterType="String"  resultMap="classifyBeanOut">
+        Select * from blogclassify where userId = #{userId}
+    </select>
+
+    <update id="updateClass">
+        UPDATE blogclassify SET classifyName = #{classifyName}
+        WHERE id=CONVERT(#{classifyId},signed int) AND userId=CONVERT(#{userId},signed int)
+    </update>
+
+    <delete id="removeClass">
+        DELETE FROM  blogclassify WHERE id=CONVERT(#{classifyId},signed int) AND userId=CONVERT(#{userId},signed int)
+    </delete>-->
+
+</mapper>
